@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <title>Test des possibilités de l'élément &lt;canvas&gt;</title>
+        <meta charset="utf-8">
+        <meta name="description" content="165c. uniques">
+        <script src="jquery-2.1.3.min.js"></script>
+        <script type="text/JavaScript" src="jcanvas.js"></script>
+		<script type="text/JavaScript" src="oussé.js"></script>
+    </head>
+
+    <body>
+        <div id="page">
+            <canvas width="1280" height="720" id="zoneDeTest" style="float:left"></canvas>
+            <div id="ajoutCase" style="position: absolute; left: 10px; top: 10px; background-color: white;
+            border-radius: 10px; width: 320px; height: 30px; align-items: center;" >
+                <input id="inpRecherche" type="text" />
+                <input type="button" value="Rechercher" onclick="rechercher(grille)" />
+            </div>
+        </div>
+
+        <script>
+            var canvas = document.getElementById("zoneDeTest");
+            canvas.width = document.documentElement.clientWidth;
+            canvas.height = document.documentElement.clientHeight;
+            var grille = new Grille(canvas);
+
+            $.ajax({
+                url: "banque.json",
+                dataType: 'json',
+                success: function(data, statut) {grille.charger(data.cases)},
+                error: function() {console.log("raté !");}
+            });
+
+            var timer = setInterval(function()
+            {
+                if(nbImgChargees >= grille.cases.length)
+                {
+                    grille.afficher(true);
+                    registerMouseEvents(grille);
+                    clearInterval(timer);
+                }
+            }, 50);
+
+
+        </script>
+    </body>
+</html>
